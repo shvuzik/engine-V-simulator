@@ -12,4 +12,8 @@ Status:
 * runs Dhrystone
 * runs Zephyr Hello World
 
-machine interrupt not implemented. Binary files are loaded to address 0, console UART is byte write to address 0xC000 (C as in Console)
+machine timer interrupt not implemented
+
+Binary files are loaded to address 0
+
+console UART is byte write to address 0xC000 (C as in Console)
