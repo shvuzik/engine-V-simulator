@@ -3,7 +3,9 @@ Simulator for engine-V
 
 Designed from scratch on saturday, simulator to pass the RISCV requirements as set by the RISCV SoftCPU Contest 2018.
 
-Compiled with Delphi XE7, should compile under Tokyo too, but not tested get [Delphi Community Edition](https://www.embarcadero.com/products/delphi/starter/free-download) if you want to try out.
+Compiled with Delphi XE7, should compile under Tokyo too, 
+
+Get free [Delphi Community Edition](https://www.embarcadero.com/products/delphi/starter/free-download) if you want to try out.
 
 Test binaries included https://github.com/micro-FPGA/engine-V-simulator/tree/master/Win32/Debug/images
 
