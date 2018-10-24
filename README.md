@@ -3,7 +3,7 @@ Simulator for engine-V
 
 Designed from scratch on saturday, simulator to pass the RISCV requirements as set by the RISCV SoftCPU Contest 2018.
 
-Compiled with Delphi XE7, should compile under Tokyo too, 
+Compiled with Delphi XE7, should compile under Tokyo too (not tested) 
 
 Get free [Delphi Community Edition](https://www.embarcadero.com/products/delphi/starter/free-download) if you want to try out.
 
