@@ -12,9 +12,7 @@ Test binaries included https://github.com/micro-FPGA/engine-V-simulator/tree/mas
 Status: 
 * passes all RV32I tests except misaligned load-store (not implemented)
 * runs Dhrystone
-* runs Zephyr Hello World
-
-machine timer interrupt not implemented
+* runs Zephyr Hello World, Philosophers and Synchronization
 
 Binary files are loaded to address 0
 
