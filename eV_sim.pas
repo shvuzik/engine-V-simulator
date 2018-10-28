@@ -6,8 +6,12 @@ uses
   Windows, SysUtils, System.Classes;
 
 const
-  SIM_BUS_FAULT = 3;
+  SIM_BUS_FAULT  = 3;
   SIM_UART_WRITE = 4;
+  SIM_UART_READ  = 5;
+  SIM_CSR_WRITE  = 6;
+  SIM_CSR_READ   = 7;
+  SIM_WFI        = 8;
 
 
 type
@@ -45,11 +49,16 @@ type
 
     cycle: uint64;
 
+    mtimer_enabled,
+    mtimer_expired: boolean;
+
     mepc,
     mtvec,
     mtval,
     mip,
+    mie,
     mcause,
+    mstatus,
     mscratch: cardinal;
 
 
@@ -392,12 +401,19 @@ begin
   result := 0;
   case csr of
     $B00: result := cycle;
-
+    $300: result := mstatus;
+    $304: result := mie;
     $340: result := mscratch;
     $341: result := mepc;
     $342: result := mcause;
     $343: result := mtval;
+    $344: result := mip;
     $305: result := mtvec;
+    else begin
+       iss_status := SIM_CSR_READ;
+       iss_addr := csr;
+       running := false;
+    end
   end;
 
 end;
@@ -556,11 +572,38 @@ end;
 procedure TMCode.set_CSR(csr: integer; value: cardinal);
 begin
   case csr of
+    $300: mstatus := value;
+    $304: begin
+      mie := value;
+      if (value and $80) = 0 then
+      begin
+        //disable machine timer
+        mtimer_enabled := false;
+      end else begin
+        // enable machine timer
+        mtimer_enabled := true;
+      end;
+      if (value and $FFFFFF7F) <> 0 then
+      begin
+        // enabling unsupported interrupt
+        iss_status := SIM_CSR_WRITE;
+        iss_addr := csr;
+        iss_data := value;
+        running := false;
+      end;
+    end;
     $340: mscratch := value;
     $341: mepc := value;
     $342: mcause := value;
     $343: mtval := value;
+    $344: mip := value;
     $305: mtvec := value;
+    else begin
+      iss_status := SIM_CSR_WRITE;
+      iss_addr := csr;
+      iss_data := value;
+      running := false;
+    end;
   end;
 end;
 
@@ -1011,7 +1054,9 @@ begin
             if (instruction and $FFF00000) = $10500000 then
             begin
                //m := 'WFI';
-               running := false;
+               //running := false;
+               iss_status := SIM_WFI;
+               FPC := FPC + 4; // ?
             end;
 
           end;

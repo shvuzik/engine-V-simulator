@@ -31,6 +31,7 @@ type
     Label4: TLabel;
     Image1: TImage;
     Label5: TLabel;
+    Timer1: TTimer;
     procedure Button1Click(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -38,6 +39,7 @@ type
     procedure Button4Click(Sender: TObject);
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
+    procedure Timer1Timer(Sender: TObject);
   private
     { Private declarations }
     terminate: boolean;
@@ -285,8 +287,31 @@ begin
         end;
         SIM_BUS_FAULT: begin
            l.Lines.Add('BUS FAULT at ' + inttohex(MC.iss_addr, 8));
+        end;
+
+        SIM_WFI: begin
+           //l.Lines.Add('WFI');
+           if mc.mtimer_expired then
+           begin
+              mc.mepc := mc.PC;
+              mc.PC   := mc.mtvec;
+              mc.mcause := $80000007; // machine Timer interrupt
+              mc.mip := $80;
+              mc.mtimer_expired := false;
+           end;
 
         end;
+
+        SIM_CSR_READ: begin
+           l.Lines.Add('CSR READ ' + inttohex(MC.iss_addr, 8));
+        end;
+        SIM_CSR_WRITE: begin
+           l.Lines.Add('CSR WRITE ' + inttohex(MC.iss_addr, 8) + ' ' + inttohex(MC.iss_data, 8) );
+        end else begin
+           l.Lines.Add('ISS Status ' + inttostr(mc.iss_status) );
+           mc.running := false;
+        end;
+
       end;
       MC.iss_status := 0;
     end;
@@ -490,6 +515,11 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   MC := TMCode.Create(self);
 
+end;
+
+procedure TForm1.Timer1Timer(Sender: TObject);
+begin
+   mc.mtimer_expired := true;
 end;
 
 end.

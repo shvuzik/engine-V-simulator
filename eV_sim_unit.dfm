@@ -6701,7 +6701,6 @@ object Form1: TForm1
         Text = 'IDLE'
         Width = 50
       end>
-    ExplicitWidth = 872
   end
   object ref: TMemo
     Left = 480
@@ -6767,5 +6766,11 @@ object Form1: TForm1
     Caption = 'Step'
     TabOrder = 14
     OnClick = Button7Click
+  end
+  object Timer1: TTimer
+    Interval = 50
+    OnTimer = Timer1Timer
+    Left = 752
+    Top = 224
   end
 end
