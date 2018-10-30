@@ -161,18 +161,38 @@ begin
     begin
       case MC.iss_status of
         SIM_UART_WRITE: begin
+           if (MC.iss_data and $FF)=$0a then c.Lines.Add('');
+           
            c.Text := c.Text + char(MC.iss_data and $FF);
-           if (MC.iss_data and $FF)=$0A then c.Lines.Add('');
-
-           //l.Lines.Add(inttohex(MC.iss_data and $FF, 2));
-           MC.iss_status := 0;
-          // MC.running := false;
         end;
         SIM_BUS_FAULT: begin
            l.Lines.Add('BUS FAULT at ' + inttohex(MC.iss_addr, 8));
+        end;
+
+        SIM_WFI: begin
+           //l.Lines.Add('WFI');
+           if mc.mtimer_expired then
+           begin
+              mc.mepc := mc.PC;
+              mc.PC   := mc.mtvec;
+              mc.mcause := $80000007; // machine Timer interrupt
+              mc.mip := $80;
+              mc.mtimer_expired := false;
+           end;
 
         end;
+
+        SIM_CSR_READ: begin
+           l.Lines.Add('CSR READ ' + inttohex(MC.iss_addr, 8));
+        end;
+        SIM_CSR_WRITE: begin
+           l.Lines.Add('CSR WRITE ' + inttohex(MC.iss_addr, 8) + ' ' + inttohex(MC.iss_data, 8) );
+        end else begin
+           l.Lines.Add('ISS Status ' + inttostr(mc.iss_status) );
+           mc.running := false;
+        end;
       end;
+      MC.iss_status := 0;
     end;
 
 //    if iw=$0ff0000f then

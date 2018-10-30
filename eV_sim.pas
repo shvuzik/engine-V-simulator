@@ -400,7 +400,9 @@ function TMCode.get_CSR(csr: integer): cardinal;
 begin
   result := 0;
   case csr of
+    $F14: result := 0; // mhartid
     $B00: result := cycle;
+    $B02: result := 0; // cycleh
     $300: result := mstatus;
     $304: result := mie;
     $340: result := mscratch;
@@ -572,6 +574,14 @@ end;
 procedure TMCode.set_CSR(csr: integer; value: cardinal);
 begin
   case csr of
+    $F14: begin
+      // ignore write to mhartid by Dhrystone
+
+    end;
+    $B00, $B02: begin
+      // ignore write to mcycle by Dhrystone
+
+    end;
     $300: mstatus := value;
     $304: begin
       mie := value;
