@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{A04FEE79-F3D2-407A-A8F1-1956BBFB7DDB}</ProjectGuid>
+        <ProjectGuid>{C2369E09-B88E-4D49-83EA-F4D6E8A92388}</ProjectGuid>
         <ProjectVersion>16.1</ProjectVersion>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>engine_V_simulator.dpr</MainSource>
@@ -83,11 +83,11 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="eV_sim_unit.pas">
+        <DCCReference Include="ev_sim_unit.pas">
             <Form>Form1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="eV_sim.pas"/>
+        <DCCReference Include="mcode_unit.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

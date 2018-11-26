@@ -10,7 +10,7 @@ Get free [Delphi Community Edition](https://www.embarcadero.com/products/delphi/
 Test binaries included https://github.com/micro-FPGA/engine-V-simulator/tree/master/Win32/Debug/images
 
 Status: 
-* passes all RV32I tests except misaligned load-store (not implemented)
+* passes all RV32I tests
 * runs Dhrystone
 * runs Zephyr Hello World, Philosophers and Synchronization
 
